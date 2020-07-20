@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+# paste and run in redis folder
+
 rm nodes*
 echo "-> starting nodes"
 src/redis-server redis.conf& > redis_logs
