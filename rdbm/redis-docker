@@ -1,0 +1,84 @@
+docker -it run --name test-redis --rm -p 6379:6379 redis:alpine
+
+get redis running 
+
+docker run -it --net=host redis:alpine redis-cli
+
+to connect to the redis
+
+docker exec -it test-redis sh
+
+to get into your redis docker
+
+docker run -it -v ${PWD}/redis9101.conf:/usr/local/etc/redis/redis.conf --net host --rm --name redis9100 redis:alpine redis-server /usr/local/etc/redis/redis.conf
+
+docker run -d --net host redis:alpine redis-cli -p 9101 slaveof 127.0.0.1 9100
+
+create multiple files 
+cp redis_9100.tmp  redis_9100.conf
+sed -e 's/port 9100/port 9101/' redis_9100.tmp > redis_9101.conf
+sed -e 's/port 9100/port 9102/' redis_9100.tmp > redis_9102.conf
+sed -e 's/port 9100/port 9103/' redis_9100.tmp > redis_9103.conf
+sed -e 's/port 9100/port 9104/' redis_9100.tmp > redis_9104.conf
+sed -e 's/port 9100/port 9105/' redis_9100.tmp > redis_9105.conf
+
+
+for i in `seq 9100 9105`;
+do
+echo $i;
+docker run -d -v ${PWD}/redis_$i.conf:/usr/local/etc/redis/redis.conf --net host --rm --name redis_$i redis:alpine redis-server /usr/local/etc/redis/redis.conf;
+done
+
+docker run -it --net host redis:alpine redis-cli --cluster create 127.0.0.1:9100 ... .... 9105 --cluster-replicas 1
+
+
+docker run -it --net host redis:alpine redis-cli -p 9100 config get cluster-enabled
+
+send to correct node
+docker run -it --net host redis:alpine redis-cli -c -p 9100 set a 1
+
+check 
+docker run -it 
+
+
+
+
+
+redis commands:
+set score 1
+get score
+incrby score 2
+getrange score 0 10
+
+hset randomhash a b c d
+hget randomhash c
+> d
+hgetall randomhash
+hincrby
+
+list
+lpush key val val
+rpush key val val
+right push
+lrange key start end
+lindex key index
+lpop key
+Lset key index ..
+
+set 
+sadd key member mem mem
+scard key
+sinter key1 k2
+intersaction
+sdiff k1 k2
+differance
+
+
+sorted sets
+zadd key val member
+zrange key start end
+zrevrange key start end
+
+
+BITOP bbitwise operations can be done in redis
+
