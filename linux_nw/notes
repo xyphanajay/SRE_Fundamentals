@@ -1,0 +1,96 @@
+https://vincent.bernat.ch/en/blog/2014-tcp-time-wait-state-linux
+http://blog.muthuraj.in/2020/02/a-tale-of-apache-and-two-congestion.html
+http://nginx.org/en/docs/http/ngx_http_core_module.html#listen
+
+There are two queues. Syn queue and Accept queue. So when you receive an ack, it’s matched against the Syn queue and if it matches, it’s removed from the queue. so tcp_max_syn_backlog comes in picture here. somaxconn comes in the accept queue. Accept queue contains fully established connections. But nowadays, net.core.somaxconn does both queues. So just check more about it
+
+mimic tcp traceroute 
+$traceroute -I url
+
+check your routing table
+$ip route
+$ip r s
+
+https://www.submarinecablemap.com/
+
+vlans
+
+l3 switches not broadcast
+l2 switches are broadcast
+
+access port - 1 vlan allowed
+trunk port - multi vlan allowed
+
+pvid - native vlan
+tagged vlan
+
+create vlan using ip
+$ sudo ip link add link esp0s0 name vlantest type vlan id 100
+
+$ sudo ip link vlantest del
+
+BGP
+autonomous no as
+our as is
+https://bgp.he.net/AS40034#prefixes
+5 internet link in austin dc
+2 of them 10 gbps
+tier 1 isps directly give us
+
+mitigation ddos neustar
+
+null routes
+
+tunnels
+connection btw hosts with private ips
+
+ipsec tunnel
+industry standard
+we use pfsense tunnels
+
+$ ipsec statusall
+
+https://blog.cloudflare.com/is-bgp-safe-yet-rpki-routing-security-initiative/
+
+DSR
+ddirect server redirect
+before
+client <------> lb <-----> server
+after
+       lb
+     /     \ 
+client <---  server
+
+virtual ip - vip used at lb
+
+arpi filter
+if your host have that ip... u take it ...  otherwise you wont
+kernel doesnt take pkt if it doesnt know how to reach it
+
+
+
+DNS
+dig media.net
+A record - address record
+dig A media.net
+
+cat /etc/resolv.conf
+
+dig +trace media.net @8.8.8.8
+
+docker run -i \
+    -p 53:53/tcp \
+    -p 53:53/udp \
+    -e WILDCARD_DNS='example.com=127.0.0.1' \
+    -t cytopia/bind
+
+
+deugging 
+ping
+traceroute
+mtr
+looking glass
+
+
+
+lookup dmz
