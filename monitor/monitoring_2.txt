@@ -1,0 +1,71 @@
+prometheus
+
+metrics with graphite
+time series data: data with time as other axis
+
+collection storage and visualizationof time series data
+
+push based model - apps are responsibble to push data to graphite
+
+grafana labs: company that loves opensource and visualize
+
+metric name
+metric value
+specific time in universe where it belongs
+
+dbtype - round robin db
+data format - plain text  picl;e amqp
+input - metric path value timestamp
+
+responsibilies:
+-collection -storage -visualization
+
+responsi of components:
+- graphite we - to display dashoard
+- carbon - caches
+- whisper - carbon is writing in this format... kinda file system
+
+graphite's pov:
+webb <-> db
+web <->carbon-cache
+web <-> whisper
+
+collection:
+requirements
+- replay data from across infra
+- aggregate data over time - calc avg and all after receiving
+- cache data until ti is persisted
+
+collection:
+- carbon daemons
+-go carbon
+agent -> cache -> persister
+- carbon-relay
+
+go-carbon
+
+apps & hosts sending metrics
+	|
+	\/
+carbon relays routing/aggregating metrics-port 2003/4
+	|
+	\/
+graphite metrics storage(caron cache) port 2003/4
+
+storage: in whisper dbb
+- fixed size db for storing time series data , round robin db
+- stores data in file( 1 per metric), .wsp extension
+- can store in high resol and low resol ( less data ponints) 
+  creates buckets for archives accordingly
+- date stored: wsp files format - meta data, data points grouped in archives
+- some pythontools to play with .wsp file
+
+retention and resolution: 1 data pomint every 1 min for 1 day 
+ or 1 data ponint every 3 min for 15 days
+
+visualization:
+graphite webb-app: django app
+api end retrieve raw data and generate graphs
+a ui to navigate metrics and build and save dashboards
+
+

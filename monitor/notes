@@ -1,0 +1,187 @@
+content monetization
+domain monetization
+ad bidding
+
+sem: deal with search monetization
+
+1 million requests
+ebb 1 billion + calls peak
+
+
+failures
+software
+hardware
+network
+everything in btw
+
+SLO -> goal set for your self
+
+SLA/uptime proper agreement:
+5 nines
+easy to calc
+can cost you lose half of revenue
+
+MTTR mean time to recover
+
+capacity planning.. growth
+performance issues
+
+Monitoring tools:
+top/htop
+ps
+free
+netstat
+apache server-status
+redis r/w keys
+web is up
+
+automate monitoring:
+nagios
+icinga
+sophos
+pingdom
+promethius alert manager
+pager duty
+
+Monitoring system:
+core
+-schedules/collects results from checks
+-external/internal checks
+-white/black box checks
+-active/passive checks
+-redis checks
+
+web interfaces
+agents
+plugins/addons
+graphing
+reporting
+alerting
+- pager duty, victorops, sms, email
+- multi notif methods or group alerts
+- auto escalation - time bound or severity (S1(highest, manager), S2(sre team), S3) 
+- alert fatigue - actionable (noise, no of alerts)
+- human factor - build reputation of proper alerts
+RCA root cause analysis
+-what issue
+-how and when we get alert
+-timeline
+-cause of happening
+-how we resolved
+-when resolved
+
+
+
+load average: how many processes are waiting for cpu or io
+run queue length
+$vmstat
+
+ping alerts - 100ms warning 200ms criticak
+
+
+icinga 2 template
+=================
+object Host "myserver"
+{
+	address = "10.0.0.1"
+	check_command = "host_alive"
+}
+object Service "ping4"
+{
+	hostname  = "myserver"
+	check_command = "ping4"
+}
+object Service "http"
+{
+	host_name = "myserver"
+	check_command = "http"
+}
+
+template Service "genneric-servuce"
+{
+	max_check_attempts = 3
+	check_internval = 5m	// check in 3 minutes interval when normal
+	retry_internval = 1m	// when failing then check every min
+	enable_perfdata = true
+}
+apply Service "ping4"
+{
+	import "generic-service"
+	check_command = "ping4"
+	assign where host.address
+}
+apply Service "ssh-check"
+{
+	import "generic-service"
+	check_command = "ssh"
+	assign where host.varrs.os == 'Linux'
+}
+
+ignore where match('c*-tax-*.srv.media.net', host.name')
+assign where match('c*-mowx-*
+assign where 'AutoOpt-3-Infra-ADC' in host.groups
+ignore where reget("^webserver-[\\d+\]", host.name)
+
+object CheckComman "my-ping"
+{
+	command = [ PluginDir + "/check_ping", "-H", "$ping_address$" ]
+	arguements = {
+			"-p" = "$ping_address$"
+			}
+	vars.ping_wrta = 100
+	vars.ping_cpl = 15
+	vars.ping_address = "$address$"
+}
+object Zone "sssss"
+{parent="aws-sss"
+}
+
+object Endpoint "dsfsd"
+{host = "10.3.3.3"}
+
+icinga2 distributed monitering
+==============================
+master 
+zone <- child to master, reports back to master
+satellite (multiple in a zone, takes care of their zone only)
+client <- contacts satellite for push data
+
+type of checks
+==============
+active -> where client(checker) runs the script and send it to satellite 
+eg. check_ping, check_http
+passive -> where client is going to wait for data to come to it... it will just wait
+eg. redis_check_script etc
+
+$ ps awus | grep keyword
+
+-----------------------------------
+wrap up: icinga2
+go through documentation: https://icinga.com/docs/icinga2/latest/doc/09-object-types/#monitoring-objects
+
+object has attributes
+hosts and services
+
+soft state - you will weight while moving from one state to another
+hard state - you will be in soft state and ...
+
+assign where
+ignore where
+
+configurations:
+master, satellite, client/agent
+mostly fixed by puppet
+
+conf.d dir which will have all the objects
+
+
+config host ka file zone ka file agent ka file
+make api call telling all the files.. will create packages for u
+for better segregation
+
+https://icinga.com/demo/authentication/login?redirect=monitoring%2Ftactical
+
+
+flapping state: when going down and up quickly serveral times.
+
+

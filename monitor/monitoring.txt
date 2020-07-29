@@ -1,0 +1,124 @@
+Have your tried turning off and on again!
+
+Doesnt work in production where thing are running 24*7
+
+
+
+
+you just care aout system/process, 
+old monitoring Nagios/Icinga2
+it doesn't work with dynamic systems...
+you forget to add monitoring in new instances
+but now we can use service discovery tools which takes care of the server
+
+nagios doesn;t tell what went wrong.. just 0, 1 ,2
+aws autoscaling alerts.. how to handle terminating servers
+
+no nagios on containers
+nagios NO
+promethius YES
+
+if clients are being served, dont wake me up
+if service is down, wake me up
+
+white-box vs bblack box monitoring system
+white box: alerts included in service.. helps debugging
+
+one person's symptoms other persions cause
+white box monitoring is sometimes symptoms-oriented, and sometimes cause-oriented,
+depending on just how informative your white box is
+
+if web servers seem slow on db-heavy requests, you need to know both how fast 
+the web server percieves the db to be, and how fast the db believes itself to be.
+you can't distinguish and actually slow db server from a network problem btw
+your web server and db.
+
+devops:
+good culture, company should accept new cultures
+automation - most of the time, ci/cd
+metrics - 
+sharing - metrics should be shared, dont keep it to yourself
+this helps, once to teach someone how to check services
+
+why metrics are impt
+- find when a service is unavail (before your users)
+- understand failures (post-mortem)
+- learn from your infrastructure
+- anticipated and plan for future
+
+explore metrics for  your infra
+collect as many metrics as possible... take time to do it
+take calls according to that
+
+
+collecting metrics:
+collect many
+frequently and dynamically (of different time intervals)
+storing the metrics in a sane way (avoid averaging old metrics, etc.)(raw is good)
+
+key metrics:
+rate - number of requests per sec
+errors - no of req that are failing
+duration - amount of time, those req are taking (v impt)
+
+-> read "large scale cluster management at google with borg" research ppr
+
+borgmon
+- easy  to scrape via scropts or other automation tools
+- use service that would scrape, process and exports metrics via http
+
+
+Prometheus: Comparsion with Nagios
+nagios old, only handles basic monitoring 
+
+prometheus storage:
+64 bit floats to sample
+uses fb's gorilla compression
+one instance can handle more than 2k
+pull based
+supports service discovery tools... integrate
+
+
+metric types:
+- counter: monotically inc counter
+- gauge: single num val that can be up and down, total no of req
+- histogram: smaples observations and counts them in conf buckets
+- summary: sample...
+
+data-types and selectors:
+- data types
+-- instant vector: in particular point in time, can be plotted
+-- range vector: arr of instant vector, multiple key val pair
+-- scaler: some of something
+
+- selectors: based on tags and labels
+-- instant vectors
+-- range vectors
+-- offset modifier
+
+PromQL: used in prometheus
+- have inbuild support for lots of statical methods,
+  approx and anomaly detection using holt_winters
+- absent can be used as alerts
+
+Node exporters
+
+grafana
+alert manager
+- is designed to be as opinion agnostic as possile
+- verbose on firing
+- it is compact but details on notification
+- can be run in HA by running two instances and they communicate with 
+  each other using gossip protocol
+
+alerts for services
+
+4 golden rules:
+latency
+traffic
+errors
+saturation
+
+
+
+
