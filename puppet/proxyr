@@ -1,0 +1,20 @@
+squid
+
+user ---- p r
+
+user ---- o x ----> server
+  
+user ---- y
+
+reverse proxy ---
+u ----- rev --- web
+u 
+u ----- pro --- server
+u ----- xy  ---
+u
+tcp conn
+...
+
+realtime -> strict time gurantees
+
+

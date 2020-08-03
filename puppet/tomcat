@@ -1,0 +1,82 @@
+tomcat
+
+java code turned into bincary.. run in jvm
+tomcat - opensource http server
+servlet container
+catalina - module, which complies
+coyote - connector module, something with servlet
+JSP jasper - to compile jasper
+
+tomcat for java apps
+apache for http static serving
+
+server -> services -> engine -> host -> contexts docs (applications or webapps)
+------ connectors -http -https -ajp
+
+$ docker pull tomcat:9.0
+$ docker run tomcat:9.0 tar -c -C /usr/local/tomcat/conf server.xml | tar x
+server config
+- server port
+- service name catalina
+- connector port portocol
+- Host name appBase
+- Valve className...
+
+- context containers (war files):
+web application
+web archive (war)
+relative toserver's addr (http://localhost)
+$catalina_Home/webapps
+
+TOMCAT PORTS
+def 8080
+jmx port configurable
+
+dir
+/bin -> container script binary go
+/conf -> config
+/webapps -> code dir, place war here
+/lib -> tomcat's jar files accessible to all webbapps
+/logs -> tomcat logs (access, error, catalina.out)
+
+appBase = webapps
+
+deploying into tomcat
+-> can use tomcat manager : usually disabble this.. not to be exposed to pubb
+-> copy war files in webapps and restart
+-> auto deployes new versions if present in webapps dir
+
+tomcat manager:
+-> disabled in production
+-> 
+
+monitor tomcat with JMX:
+
+
+
+$ docker run -e CATALINA_OPTS="-Xms64m -Xmx128m -Dcom.sun.management.jmxremote 
+   -Dcom.sun.management.jmxremote.port=9000 -Dcom.sun.management.jmxremote.ssl=false 
+   -Dcom.sun.management.jmxremote.authenticate=false" 
+   --rm -it -p 9000:9000 -p 8888:8080  tomcat:9.0
+
+heap
+-Xmx max size
+-Xms start size
+
+----------
+garbage collection--:
+|5gbb new  eden space | s1 | s2 | 5gb old space |
+new objects -> eden space
+when eden full... push data to s1
+s1/s2 are always empty
+after aging .. old objects moved to old space
+
+
+log error to file
+- XX:ErrorFile=/opt/tomcat-instances/CommonTomcat
+
+java flight recorder: - JFR
+-XX:+FlightRecorder -XX+UnlockCommercialFeatures
+-XX:+UnloclDiagnostics..
+
+

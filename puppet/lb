@@ -1,0 +1,55 @@
+https://tasks.techto.date/w/lb
+
+scalability
+vertically - better h/w for this, bbut after a certain level you stop
+horizontally - 
+
+ss => socket stat
+
+established - 
+keep alive - 
+
+
+$ docker pull haproxy:1.9
+$ docker run -it -p 9080:80 -v `pwd`/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro haproxy:1.9.5
+
+get default tomcat server.xml
+$ docker run tomcat:9.0 tar -c -C /usr/local/tomcat/conf server.xml | tar x
+
+make new config
+----
+global
+	daemon
+	maxconn 1024
+	pidfile /var/run/haproxy.pid
+
+defaults
+	balance roundrobin
+	timeout client 60s
+	timeout connect 60s
+	timeout server 60s
+
+frontend http
+	bind :80
+	default_backend nodes
+
+backend nodes:
+	mode http
+        balance roundrobin
+        option forwardfor
+        server something 127.0.0.1:81
+        server other 127.0.0.1:82
+---
+
+run haproxy container
+
+docker run tomcat
+$ docker run -e CATALINA_OPTS="-Xms64m -Xmx128m -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9000 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false" --rm -it -p 9000:9000 -p 8888:8080  tomcat:9.0
+
+
+
+
+wrk package.. preferred
+jmeter tool
+
+

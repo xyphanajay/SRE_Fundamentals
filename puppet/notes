@@ -1,0 +1,109 @@
+sudo docker pull openresty/openresty:alpine
+
+===> https://tasks.techto.date/w/webservers/
+===> beej.us for socket programming
+
+ss  -tna | grep ESTAB | head
+
+http headers
+curl -v ffl.shoeb.pw/ip
+telnet 
+GET /ip HTTP/1.1
+
+
+setup two websites hosted on same ip
+> using web headers...
+i think separate host in pkt
+right
+
+$ echo -e 'GET / HTTP/2.0\nHost: ffl.shoeb.pw\n\n' | nc 35.229.119.234 80
+$ echo -e 'GET / HTTP/2.0\nHost: ffl.shoeb.pw\nConnection: Close\n\n' | nc 35.229.119.234 80
+
+$ echo hello | nc -k -l 8080
+$ nc 127.0.0.1 8080
+
+libuv github.com
+
+dockers container
+docker run --rm -it -p 80:80  openresty/openresty:alpine
+docker run --rm -it --net=host  openresty/openresty:alpine
+
+create file default.conf
+server {
+    listen 80;
+    server_name localhost;
+    location / {
+       return 200 "Hello Nginx";
+    }
+}
+
+put it in ./conf
+$docker run --rm -it -p 80:80 -v `pwd`/conf:/etc/nginx/conf.d -v `pwd`/html:/usr/local/openresty/ngnix/html openrusty/openrusty:alpine
+$docker exec -it 8bb9f0bdad56 sh
+to reload
+$ /usr/local/openresty/bin/openresty -s reload
+
+
+
+curl -v localhost localhost/ -H "Host:abc.com"
+curl -v abbc.com -v --resolve abbc.com:80:127.0.0.1
+curl -v abbc.com -v --resolve abbc.com:80:0.0.0.0
+
+++++++
+apache
+++++++
+
+docker run --rm httpd cat /usr/local/apache2/conf/httpd.conf > httpd.conf
+less httpd.conf | grep -v ...
+change port 80 to 81 in httpd.conf
+docker run --rm -it -p 81:81 -v `pwd`/httpd.conf:/usr/local/apache2/conf/httpd.conf -v `pwd`/html:/usr/local/apache2/htdocs httpd
+test it on localhost:81
+
+add new file and try to access it as well...
+change file format to anything else from html
+
+append following lines in default.conf inside server/
+ root /usr/local/openresty/nginx/html;
+  location /ttt {
+    default_type "text/html";                                                                                      
+      try_files $uri $uri/ =403;
+     }
+
+reload openresty
+
+$ curl -v localhost/ttt/anything
+get 403 error
+
+
+dynamic pages
+
+docker run --rm -it -p 82:82 php:7.3-fpm  bash
+conf in /
+
+docker run  --rm -it -p 9000:9000 -v `pwd`/html:/usr/local/openresty/nginx/html php:7.3-fpm
+
+what went wronng
+file path was not give to php fpm
+
+location ~ \.php$ {                                                                                            
+include       fastcgi_params;                                                                                  
+fastcgi_param  SCRIPT_FILENAME    $request_filename;                                        
+fastcgi_pass  127.0.0.1:9000;                                                                                  
+fastcgi_buffer_size 128k;                                                                                      
+fastcgi_buffers 8 128K;                                                                                        
+fastcgi_busy_buffers_size 128k;                                                                                
+fastcgi_read_timeout 300s;                                                                                     
+fastcgi_temp_file_write_size 128k;                                                                           
+}
+
+
+lua with nginx
+
+location /lua{
+	context_by_lua_file /usr/local/openresty/nginx/html/main.lua
+}
+
+time command  // gives time used by command
+
+
+
