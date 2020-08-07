@@ -1,0 +1,16 @@
+
+
+
+###Features of DS
+- Communication: need to communicate if node is up
+- Processes: 
+- Synchronization: 
+- Consistency and Replication: 
+- Security: dont allow random data
+- Fault Tolerance: 
+
+###CAP Theorem:
+- Consistency, availability, partition Tolerance
+- only 2 can be achieve at any point of time
+
+:

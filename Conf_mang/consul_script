@@ -1,0 +1,14 @@
+{
+	"service": {
+		"name":	"web",
+		"tags":	[
+		"service@yellow"],
+		"port":	9000,
+		"check": {
+			"args": [
+			"curl",
+			"localhost:9000"],
+			"interval": "10s"
+		}
+	}
+}

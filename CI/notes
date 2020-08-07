@@ -1,0 +1,15 @@
+CI Jenkins setup
+
+$ git clone https://github.com/creepyghost/jenkins-docker-devtest
+-> follow readme instructions
+
+$ brew install maven
+
+$ git clone https://github.com/creepyghost/tcp-echo-server-java
+$ cd tcp-echo-server-java
+$ mvn clean compile package       	// should be running in the dir where pom is
+$ java -jar target/echoserver.jar
+$ echo hello | nc localhost 9090
+$ 
+
+$ docker exec -it jenkins_worker apt update && apt install -y maven

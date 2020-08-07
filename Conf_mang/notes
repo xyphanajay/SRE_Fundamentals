@@ -1,0 +1,5 @@
+to update puppet
+$ /opt/puppetlabs/bin/puppet-agent -tv --enviornment ajay
+
+--noop // test run... dont make changes
+

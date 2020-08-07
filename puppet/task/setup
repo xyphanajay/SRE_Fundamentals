@@ -1,0 +1,11 @@
+
+$ mkdir conf.d
+$ touch conf.d/default.conf
+$ mkdir html
+
+-> start openresty
+$ docker run --rm -it -p 80:80 -v `pwd`/conf.d:/etc/nginx/conf.d -v `pwd`/html:/usr/local/openresty/nginx/html openresty/openresty:alpine
+$ curl localhost:80
+
+put var proxy_read_timeout $http_x_read
+but config is not reloading...
